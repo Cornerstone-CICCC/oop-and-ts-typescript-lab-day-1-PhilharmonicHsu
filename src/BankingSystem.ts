@@ -28,28 +28,99 @@ type BankAccount = {
 
 const accounts: BankAccount[] = [];
 
-function createAccount(accountNo, firstname, lastname, initialDeposit, isActive = true) {
+function createAccount(
+  accountNo: number, 
+  firstname: string, 
+  lastname: string, 
+  initialDeposit: 
+  number, isActive = true
+): BankAccount {
+  const newAccount = {
+    accountNo,
+    firstname,
+    lastname,
+    balance: initialDeposit,
+    isActive,
+    transactions: []
+  }
 
+  accounts.push(newAccount)
+
+  return newAccount;
 }
 
-function processTransaction(accountNo, amount, transactionType) {
+function processTransaction(accountNo: number, amount: number, transactionType: TransactionType): string {
+  const targetAccount = accounts.find((account: BankAccount) => account.accountNo === accountNo);
 
+  if (targetAccount) {
+    const transaction: Transaction = {
+      accountNo,
+      amount,
+      type: transactionType
+    }
+
+    targetAccount.transactions.push(transaction)
+
+    const word = transactionType === TransactionType.Deposit
+      ? 'deposited'
+      : 'withdrawn'
+
+    if (transactionType === TransactionType.Withdraw) {
+      if (targetAccount.balance >= amount) {
+        targetAccount.balance -= amount;
+      } else {
+        return "Insufficient funds for withdrawal";
+      }
+    } else {
+      targetAccount.balance += amount;
+    }
+
+    return `${amount} ${word} into account number ${accountNo}`
+  }
+
+  return "Undefinded Acount Number";
 }
 
-function getBalance(accountNo) {
+function getBalance(accountNo: number): number|string {
+  const targetAccount = accounts.find((account: BankAccount) => account.accountNo === accountNo);
 
+  if (targetAccount) {
+    return targetAccount.balance;
+  }
+
+  return "Undefinded Acount Number";
 }
 
-function getTransactionHistory(accountNo) {
+function getTransactionHistory(accountNo: number): Transaction[] | string {
+  const targetAccount = accounts.find((account: BankAccount) => account.accountNo === accountNo);
 
+  if (targetAccount) {
+    return targetAccount.transactions;
+  }
+
+  return "Undefinded Acount Number";
 }
 
-function checkActiveStatus(accountNo) {
+function checkActiveStatus(accountNo: number): boolean| string {
+  const targetAccount = accounts.find((account: BankAccount) => account.accountNo === accountNo);
 
+  if (targetAccount) {
+    return targetAccount.isActive;
+  }
+
+  return "Undefinded Acount Number";
 }
 
-function closeAccount(accountNo) {
+function closeAccount(accountNo: number): string {
+  const targetAccount = accounts.find((account: BankAccount) => account.accountNo === accountNo);
 
+  if (targetAccount) {
+    targetAccount.isActive = false;
+
+    return `Account number ${accountNo} closed`
+  }
+
+  return "Undefinded Acount Number";
 }
 
 // Test cases (students should add more)
