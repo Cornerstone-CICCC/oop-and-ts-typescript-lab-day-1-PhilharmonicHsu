@@ -8,12 +8,38 @@
 // 6. Create a function called getStudent which returns a student’s information based on studentId.
 const students = [];
 function addStudent(studentId, name, age, subjects, status) {
+    const newStudent = {
+        studentId,
+        name,
+        age,
+        subjects,
+        status
+    };
+    students.push(newStudent);
+    return newStudent;
 }
 function updateStatus(studentId, status) {
+    const targetStudent = students.find(student => student.studentId === studentId);
+    if (targetStudent) {
+        targetStudent.status = status;
+        return `${targetStudent.name} has ${targetStudent.status}`;
+    }
+    return "Undefinded student";
 }
 function addSubject(studentId, subject) {
+    const targetStudent = students.find(student => student.studentId === studentId);
+    if (targetStudent) {
+        targetStudent.subjects.push(subject);
+        return `${subject} added to ${targetStudent.name}'s subjects`;
+    }
+    return "Undefinded student";
 }
 function getStudent(studentId) {
+    const targetStudent = students.find(student => student.studentId === studentId);
+    if (targetStudent) {
+        return targetStudent;
+    }
+    return "Undefinded student";
 }
 // Test cases (Create more if needed)
 console.log(addStudent(1, "Alice", 20, ["Math", "Science"], "active")); // { studentId: 1, name: "Alice", age: 20, subjects: ["Math", "Science"], status: "active" }
