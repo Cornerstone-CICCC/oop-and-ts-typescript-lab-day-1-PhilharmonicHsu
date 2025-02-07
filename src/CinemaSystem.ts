@@ -8,27 +8,64 @@
 
 enum MovieGenre {
   Action,
-  // add 4 more
+  Fantacy,
+  Horror,
+  Funny,
+  Spy
 }
 
 type Seat = [string, number]
 
 type Movie = {
-
+  movieId: number,
+  title: string,
+  genre: MovieGenre,
+  availableSeats: Seat[];
 }
 
 const movies: Movie[] = [];
 
-function addMovie(movieId, title, genre, availableSeats) {
+function addMovie(movieId: number, title: string, genre: MovieGenre, availableSeats: Seat[]) {
+  const newMovie: Movie = {
+    movieId,
+    title,
+    genre,
+    availableSeats
+  }
 
+  movies.push(newMovie)
+
+  return newMovie;
 }
 
-function bookSeat(movieId, rowLetter, seatNumber) {
+function bookSeat(movieId: number, rowLetter: string, seatNumber: number): string {
+  const targetMovie = movies.find(movie => movie.movieId === movieId);
 
+  if (targetMovie) {
+    const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === rowLetter && seat[1] === seatNumber);
+
+    if (targetSeat) {
+      targetMovie.availableSeats = targetMovie.availableSeats.filter(seat => seat[0] !== rowLetter && seat[1] !== seatNumber);
+
+      return `Seat ${rowLetter}${seatNumber} booked successfully`
+    } else {
+      return "Seat ${rowLetter}${seatNumber} booked failed"
+    }
+  }
+
+  return "Undefinded Movie";
 }
 
-function checkSeatAvailability(movieId, rowLetter, seatNumber) {
+function checkSeatAvailability(movieId: number, rowLetter: string, seatNumber: number): boolean|string {
+  const targetMovie = movies.find(movie => movie.movieId === movieId);
 
+  if (targetMovie) {
+    const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === seatNumber[0] && seat[1] === seatNumber[1]);
+
+    return Boolean(targetSeat)
+  }
+
+  return "Undefinded Movie";
 }
 
 // Test cases (Create more if needed)
