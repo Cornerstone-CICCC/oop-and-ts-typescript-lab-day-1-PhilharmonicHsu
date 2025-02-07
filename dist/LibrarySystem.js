@@ -10,18 +10,59 @@
 var BookGenre;
 (function (BookGenre) {
     BookGenre[BookGenre["Fantasy"] = 0] = "Fantasy";
-    // add 4 more
+    BookGenre[BookGenre["Action"] = 1] = "Action";
+    BookGenre[BookGenre["Horror"] = 2] = "Horror";
+    BookGenre[BookGenre["Funny"] = 3] = "Funny";
+    BookGenre[BookGenre["Spy"] = 4] = "Spy";
 })(BookGenre || (BookGenre = {}));
 const library = [];
 function addBook(bookId, title, author, genre) {
+    const newBook = {
+        bookId,
+        title,
+        author,
+        genre,
+        isAvailable: true
+    };
+    library.push(newBook);
+    return newBook;
 }
 function borrowBook(bookId) {
+    const targetBook = library.find(book => book.bookId === bookId);
+    if (targetBook) {
+        if (targetBook.isAvailable) {
+            targetBook.isAvailable = false;
+            return `The ${targetBook.title} has been borrowed`;
+        }
+        else {
+            return `The ${targetBook.title} isn't available`;
+        }
+    }
+    return "The Book is undefind";
 }
 function returnBook(bookId) {
+    const targetBook = library.find(book => book.bookId === bookId);
+    if (targetBook) {
+        targetBook.isAvailable = true;
+        return `The ${targetBook.title} has been returned`;
+    }
+    return "The Book is undefind";
 }
 function checkAvailability(bookId) {
+    const targetBook = library.find(book => book.bookId === bookId);
+    if (targetBook) {
+        return targetBook.isAvailable;
+    }
+    return "The Book is undefind";
 }
 function removeBook(bookId) {
+    const targetBookIndex = library.findIndex(book => book.bookId === bookId);
+    if (targetBookIndex > -1) {
+        const title = library[targetBookIndex].title;
+        library.splice(targetBookIndex, 1);
+        return `The ${title} has been removed from the library`;
+    }
+    return "The Book is undefind";
 }
 // Test cases (Create more if needed)
 console.log(addBook(1, "The Hobbit", "J.R.R. Tolkien", BookGenre.Fantasy)); // { bookId: 1, title: "The Hobbit", author: "J.R.R. Tolkien", genre: BookGenre.Fantasy, isAvailable: true }
@@ -29,3 +70,4 @@ console.log(borrowBook(1)); // "The Hobbit has been borrowed"
 console.log(checkAvailability(1)); // false
 console.log(returnBook(1)); // "The Hobbit has been returned"
 console.log(removeBook(1)); // "The Hobbit has been removed from the library"
+console.log(library);
