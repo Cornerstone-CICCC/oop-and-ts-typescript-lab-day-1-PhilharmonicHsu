@@ -42,7 +42,7 @@ function bookSeat(movieId, rowLetter, seatNumber) {
 function checkSeatAvailability(movieId, rowLetter, seatNumber) {
     const targetMovie = movies.find(movie => movie.movieId === movieId);
     if (targetMovie) {
-        const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === seatNumber[0] && seat[1] === seatNumber[1]);
+        const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === rowLetter && seat[1] === seatNumber);
         return Boolean(targetSeat);
     }
     return "Undefinded Movie";

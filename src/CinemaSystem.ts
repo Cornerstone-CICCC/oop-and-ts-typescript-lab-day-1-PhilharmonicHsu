@@ -25,7 +25,7 @@ type Movie = {
 
 const movies: Movie[] = [];
 
-function addMovie(movieId: number, title: string, genre: MovieGenre, availableSeats: Seat[]) {
+function addMovie(movieId: number, title: string, genre: MovieGenre, availableSeats: Seat[]): Movie {
   const newMovie: Movie = {
     movieId,
     title,
@@ -60,7 +60,7 @@ function checkSeatAvailability(movieId: number, rowLetter: string, seatNumber: n
   const targetMovie = movies.find(movie => movie.movieId === movieId);
 
   if (targetMovie) {
-    const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === seatNumber[0] && seat[1] === seatNumber[1]);
+    const targetSeat = targetMovie.availableSeats.find(seat => seat[0] === rowLetter && seat[1] === seatNumber);
 
     return Boolean(targetSeat)
   }
