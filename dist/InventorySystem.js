@@ -7,10 +7,27 @@
 // 5. Create a function called checkStock which returns true if the item is available and false otherwise.
 const inventory = [];
 function addItem(itemId, itemName, quantity, isAvailable) {
+    const newInventoryItem = {
+        itemId,
+        details: [itemName, quantity, isAvailable]
+    };
+    inventory.push(newInventoryItem);
+    return newInventoryItem;
 }
 function updateStock(itemId, quantity) {
+    const targetInventoryItem = inventory.find(inventoryItem => inventoryItem.itemId === itemId);
+    if (targetInventoryItem) {
+        targetInventoryItem.details[1] = quantity;
+        return `Stock updated for ${targetInventoryItem.details[0]}, new quantity: ${targetInventoryItem.details[1]}`;
+    }
+    return "Undefinded Item";
 }
 function checkStock(itemId) {
+    const targetInventoryItem = inventory.find(inventoryItem => inventoryItem.itemId === itemId);
+    if (targetInventoryItem) {
+        return targetInventoryItem.details[2];
+    }
+    return 'Undefinded Item';
 }
 // Test cases (Create more if needed)
 console.log(addItem(1, "Laptop", 5, true)); // { itemId: 1, details: ["Laptop", 5, true] }
